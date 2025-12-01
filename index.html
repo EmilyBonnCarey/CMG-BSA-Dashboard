@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMG BSA Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f0efee;
+            color: #3e3d40;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #33878f;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 45px;
+            width: auto;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .user-info {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-info i {
+            color: #ffffff;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .user-team {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .env-bar {
+            background: #ffffff;
+            padding: 0.75rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .env-label {
+            font-weight: 600;
+            color: #3e3d40;
+            font-size: 0.9rem;
+        }
+
+        .env-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .env-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: #ffffff;
+            border: 2px solid;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .env-btn.prod {
+            color: #3e3d40;
+            border-color: #99c34d;
+        }
+
+        .env-btn.prod:hover {
+            background: #99c34d;
+            color: white;
+        }
+
+        .env-btn.uat {
+            color: #3e3d40;
+            border-color: #3e3d40;
+        }
+
+        .env-btn.uat:hover {
+            background: #3e3d40;
+            color: white;
+        }
+
+        .env-btn.qa {
+            color: #3e3d40;
+            border-color: #3e3d40;
+        }
+
+        .env-btn.qa:hover {
+            background: #3e3d40;
+            color: white;
+        }
+
+        .env-btn.dev {
+            color: #3e3d40;
+            border-color: #3e3d40;
+        }
+
+        .env-btn.dev:hover {
+            background: #3e3d40;
+            color: white;
+        }
+
+        .env-btn i {
+            font-size: 0.9rem;
+        }
+
+        .env-btn.cache {
+            color: #3e3d40;
+            border-color: #3e3d40;
+            margin-left: auto;
+        }
+
+        .env-btn.cache:hover {
+            background: #3e3d40;
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .quick-links-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #33878f;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #99c34d;
+        }
+
+        .category {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3e3d40;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-title i {
+            color: #33878f;
+            font-size: 0.9rem;
+        }
+
+        .quick-links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #33878f;
+            text-decoration: none;
+            color: #3e3d40;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .quick-link:hover {
+            background: #f0efee;
+            border-left-color: #99c34d;
+            transform: translateX(3px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .quick-link i {
+            color: #33878f;
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .quick-link-title {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .links-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 1rem;
+        }
+
+        .small-cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .small-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-left: 4px solid #33878f;
+        }
+
+        .small-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(51, 135, 143, 0.2);
+            border-left-color: #99c34d;
+        }
+
+        .small-card-icon {
+            font-size: 1.5rem;
+            color: #33878f;
+        }
+
+        .small-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #3e3d40;
+        }
+
+        .small-card-url {
+            font-size: 0.7rem;
+            color: #b1a7a2;
+            word-break: break-all;
+            margin-top: auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            border-left: 4px solid #33878f;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(51, 135, 143, 0.2);
+            border-left-color: #99c34d;
+        }
+
+        .card-icon {
+            font-size: 1.75rem;
+            color: #33878f;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3e3d40;
+        }
+
+        .card-url {
+            font-size: 0.75rem;
+            color: #b1a7a2;
+            word-break: break-all;
+            margin-top: auto;
+        }
+
+        .team-badge {
+            background: #99c34d;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(153, 195, 77, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .user-info {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .links-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .quick-links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="https://res.cloudinary.com/dvbdysuf5/image/upload/CMG_Web_Resources/Navigation_Images/cmg-logo.svg" alt="CMG Financial" class="logo">
+        <div class="user-info">
+            <i class="fas fa-user-circle fa-lg"></i>
+            <div>
+                <div class="user-name">Clear BSA</div>
+                <div class="user-team">Clear Team</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Clear Environment Buttons -->
+    <div class="env-bar">
+        <span class="env-label">Clear Environments:</span>
+        <div class="env-buttons">
+            <a href="https://clear.online/clear2/" target="_blank" class="env-btn prod">
+                <i class="fas fa-globe"></i>
+                PROD
+            </a>
+            <a href="https://uat.clear.online/clear2/pipeline" target="_blank" class="env-btn uat">
+                <i class="fas fa-flask"></i>
+                UAT
+            </a>
+            <a href="https://qa.clear.online/clear2/" target="_blank" class="env-btn qa">
+                <i class="fas fa-check-circle"></i>
+                QA
+            </a>
+            <a href="https://dev.clear.online/clear2/" target="_blank" class="env-btn dev">
+                <i class="fas fa-code-branch"></i>
+                DEV
+            </a>
+        </div>
+        <a href="edge://settings/privacy" target="_blank" class="env-btn cache">
+            <i class="fas fa-trash-can"></i>
+            Clear Cache
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- BSA Dashboard Section -->
+        <section class="section">
+            <h2 class="section-title">BSA Dashboard</h2>
+
+            <!-- AI Agents Category -->
+            <div class="category">
+                <h3 class="category-title">
+                    <i class="fas fa-robot"></i>
+                    AI Agents
+                </h3>
+                <div class="cards-grid">
+                    <a href="https://claude.ai/project/019accb8-c268-7216-b8ae-e935bbc95687" target="_blank" class="card">
+                        <i class="fas fa-envelope card-icon"></i>
+                        <div class="card-title">Email Agent</div>
+                        <div class="card-url">claude.ai/project/019accb8...</div>
+                    </a>
+                    <a href="https://claude.ai/project/019accc1-0239-73f4-9354-1452b7a6f563" target="_blank" class="card">
+                        <i class="fas fa-users card-icon"></i>
+                        <div class="card-title">Meeting Overview Agent</div>
+                        <div class="card-url">claude.ai/project/019accc1...</div>
+                    </a>
+                    <a href="https://claude.ai/project/019accc1-e081-7181-b8b3-d01670fccc9d" target="_blank" class="card">
+                        <i class="fas fa-list-check card-icon"></i>
+                        <div class="card-title">Requirement Builder</div>
+                        <div class="card-url">claude.ai/project/019accc1...</div>
+                    </a>
+                    <a href="https://claude.ai/project/019accbe-99d7-77d1-b108-3c002beeb100" target="_blank" class="card">
+                        <i class="fas fa-file-alt card-icon"></i>
+                        <div class="card-title">BRD Builder</div>
+                        <div class="card-url">claude.ai/project/019accbe...</div>
+                    </a>
+                    <a href="https://claude.ai/project/019acbdf-b20b-7377-acdd-abdd2769c7a4" target="_blank" class="card">
+                        <i class="fas fa-ticket card-icon"></i>
+                        <div class="card-title">Ticket Builder</div>
+                        <div class="card-url">claude.ai/project/019acbdf...</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Row with Categories -->
+            <div class="links-row">
+                <!-- Forms & Requests Category -->
+                <div class="category">
+                    <h3 class="category-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Forms & Requests
+                    </h3>
+                    <div class="small-cards-grid">
+                        <a href="https://forms.office.com/pages/responsepage.aspx?id=ZoHYV0fy7k2m-eY1n5b_LMNia0N81eRPnHCm6WXEOBlURURUT1pYQkw3NlZQNFBTS04xNkdEQlVHTi4u&route=shorturl" target="_blank" class="small-card">
+                            <i class="fas fa-pen-to-square small-card-icon"></i>
+                            <div class="small-card-title">XD Intake Form</div>
+                            <div class="small-card-url">forms.office.com/pages...</div>
+                        </a>
+                        <a href="https://forms.office.com/pages/responsepage.aspx?id=ZoHYV0fy7k2m-eY1n5b_LB1xcUNReEBIonVyj_tiN9VUOTZEN0hNSkZQRE9LUlZNRzlTWDdYQUtOQy4u&route=shorturl" target="_blank" class="small-card">
+                            <i class="fas fa-file-circle-check small-card-icon"></i>
+                            <div class="small-card-title">LOS Intake / Change Management</div>
+                            <div class="small-card-url">forms.office.com/pages...</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Development Tools Category -->
+                <div class="category">
+                    <h3 class="category-title">
+                        <i class="fas fa-code"></i>
+                        Development Tools
+                    </h3>
+                    <div class="small-cards-grid">
+                        <a href="https://cmgfidev.visualstudio.com/" target="_blank" class="small-card">
+                            <i class="fab fa-microsoft small-card-icon"></i>
+                            <div class="small-card-title">Azure DevOps (ADO)</div>
+                            <div class="small-card-url">cmgfidev.visualstudio.com</div>
+                        </a>
+                        <a href="https://chatgpt.com/" target="_blank" class="small-card">
+                            <i class="fas fa-comments small-card-icon"></i>
+                            <div class="small-card-title">ChatGPT</div>
+                            <div class="small-card-url">chatgpt.com</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resources Category -->
+                <div class="category">
+                    <h3 class="category-title">
+                        <i class="fas fa-book"></i>
+                        Resources
+                    </h3>
+                    <div class="small-cards-grid">
+                        <a href="https://cmgfi-my.sharepoint.com/:f:/r/personal/ebonnichsen_cmgfi_com/Documents/Regression%20Testing%20Sheets/BRD%20Templates?csf=1&web=1&e=TlQwnv" target="_blank" class="small-card">
+                            <i class="fas fa-folder-open small-card-icon"></i>
+                            <div class="small-card-title">ADO Ticket Templates</div>
+                            <div class="small-card-url">cmgfi-my.sharepoint.com...</div>
+                        </a>
+                        <a href="https://cmgfi-my.sharepoint.com/my?id=%2Fpersonal%2Febonnichsen%5Fcmgfi%5Fcom%2FDocuments%2FRegression%20Testing%20Sheets" target="_blank" class="small-card">
+                            <i class="fas fa-table small-card-icon"></i>
+                            <div class="small-card-title">Regression Testing Sheets</div>
+                            <div class="small-card-url">cmgfi-my.sharepoint.com...</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
